@@ -122,7 +122,7 @@ The dashboard consists of 3 interactive pages:
 ### Setup
 ```bash
 # Clone the repository
-git clone https://github.com/YOUR_USERNAME/Agricultural-Productivity-Analysis-India.git
+git clone https://github.com/DHARMIK0414/Agricultural-Productivity-Analysis-India.git
 cd Agricultural-Productivity-Analysis-India
 
 # Install Python dependencies
