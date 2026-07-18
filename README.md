@@ -43,7 +43,6 @@ Project5_Crop_Analytics/
 ├── 📊 Project5_Dashboard.pbix        # Power BI interactive dashboard (3 pages)
 ├── 📄 Project5_Dashboard_Pages.pdf   # Dashboard screenshots (PDF export)
 ├── 📖 Project5_Power_BI_Build_Guide.md  # Step-by-step Power BI recreation guide
-├── 📑 Project5_Report.html           # Professional project report (open in browser → print as PDF)
 │
 ├── 🐍 generate_dataset.py            # Automated dataset generator script
 ├── 📊 crop_production_cleaned.csv     # Cleaned dataset (10,000+ records)
