@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Report — Agricultural Productivity & Yield Analysis in India</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Source+Sans+3:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a5632;
+            --primary-light: #2d8a4e;
+            --accent: #d4a017;
+            --text: #1a1a2e;
+            --text-light: #4a4a6a;
+            --bg: #ffffff;
+            --bg-alt: #f8faf8;
+            --border: #d0dcd0;
+            --highlight: #e8f5e9;
+        }
+
+        @page {
+            size: A4;
+            margin: 20mm 18mm;
+        }
+
+        @media print {
+            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .page-break { page-break-before: always; }
+            .no-break { page-break-inside: avoid; }
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Source Sans 3', 'Segoe UI', sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ── Cover Page ── */
+        .cover {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px 30px;
+            position: relative;
+            background: linear-gradient(160deg, #f0f7f0 0%, #ffffff 40%, #fefcf4 100%);
+        }
+
+        .cover::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 8px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light), var(--accent));
+        }
+
+        .cover-org {
+            font-family: 'Merriweather', serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .cover-org-sub {
+            font-size: 13px;
+            color: var(--text-light);
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            margin-bottom: 40px;
+        }
+
+        .cover-badge {
+            display: inline-block;
+            background: var(--primary);
+            color: #fff;
+            padding: 8px 28px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+        }
+
+        .cover-title {
+            font-family: 'Merriweather', serif;
+            font-size: 30px;
+            font-weight: 900;
+            color: var(--text);
+            line-height: 1.3;
+            margin-bottom: 10px;
+            max-width: 600px;
+        }
+
+        .cover-subtitle {
+            font-size: 16px;
+            color: var(--primary-light);
+            font-weight: 600;
+            margin-bottom: 50px;
+        }
+
+        .cover-icon {
+            font-size: 64px;
+            margin-bottom: 24px;
+            filter: drop-shadow(0 2px 6px rgba(0,0,0,0.08));
+        }
+
+        .cover-details {
+            width: 100%;
+            max-width: 520px;
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            overflow: hidden;
+            text-align: left;
+            margin-top: 10px;
+        }
+
+        .cover-details-header {
+            background: var(--primary);
+            color: #fff;
+            padding: 10px 20px;
+            font-weight: 600;
+            font-size: 13px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .cover-details table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .cover-details td {
+            padding: 10px 20px;
+            border-bottom: 1px solid var(--border);
+            font-size: 13.5px;
+        }
+
+        .cover-details tr:last-child td { border-bottom: none; }
+
+        .cover-details td:first-child {
+            font-weight: 600;
+            color: var(--primary);
+            width: 140px;
+            white-space: nowrap;
+        }
+
+        .cover-footer {
+            margin-top: 50px;
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        /* ── Section Headers ── */
+        .section {
+            padding: 24px 0 16px;
+        }
+
+        .section-number {
+            display: inline-block;
+            background: var(--primary);
+            color: #fff;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            font-weight: 700;
+            font-size: 14px;
+            margin-right: 12px;
+            vertical-align: middle;
+        }
+
+        .section-title {
+            font-family: 'Merriweather', serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary);
+            display: inline;
+            vertical-align: middle;
+        }
+
+        .section-divider {
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent), transparent);
+            border: none;
+            margin: 8px 0 20px;
+            border-radius: 2px;
+        }
+
+        /* ── Content ── */
+        p {
+            margin-bottom: 12px;
+            text-align: justify;
+        }
+
+        .subsection {
+            font-family: 'Merriweather', serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text);
+            margin: 20px 0 10px;
+            padding-left: 12px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .tech-card {
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-bottom: 14px;
+        }
+
+        .tech-card-title {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 15px;
+            margin-bottom: 6px;
+        }
+
+        .tech-card-title .emoji {
+            margin-right: 8px;
+        }
+
+        .tech-card p {
+            margin-bottom: 6px;
+            font-size: 13.5px;
+            color: var(--text-light);
+        }
+
+        .tech-card ul {
+            margin: 6px 0 0 20px;
+            font-size: 13.5px;
+            color: var(--text-light);
+        }
+
+        .tech-card li { margin-bottom: 4px; }
+
+        /* ── Tables ── */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 13px;
+        }
+
+        .data-table thead th {
+            background: var(--primary);
+            color: #fff;
+            padding: 10px 14px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .data-table tbody td {
+            padding: 9px 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .data-table tbody tr:nth-child(even) { background: var(--bg-alt); }
+        .data-table tbody tr:hover { background: var(--highlight); }
+
+        /* ── Key Findings ── */
+        .finding {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 16px;
+            background: var(--bg-alt);
+            border-left: 4px solid var(--primary-light);
+            border-radius: 0 6px 6px 0;
+            margin-bottom: 10px;
+        }
+
+        .finding-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .finding-text {
+            font-size: 13.5px;
+        }
+
+        .finding-text strong { color: var(--primary); }
+
+        /* ── Code blocks ── */
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            font-family: 'Fira Code', monospace;
+            font-size: 12px;
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin: 12px 0;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        .code-block .keyword { color: #7dd3fc; }
+        .code-block .function { color: #a78bfa; }
+        .code-block .string { color: #86efac; }
+        .code-block .comment { color: #64748b; font-style: italic; }
+
+        /* ── Lists ── */
+        .styled-list {
+            margin: 10px 0 16px 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .styled-list li {
+            padding: 6px 0 6px 28px;
+            position: relative;
+            font-size: 14px;
+        }
+
+        .styled-list li::before {
+            content: '▸';
+            position: absolute;
+            left: 8px;
+            color: var(--primary-light);
+            font-weight: 700;
+        }
+
+        /* ── Recommendation Cards ── */
+        .rec-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 14px 18px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+        }
+
+        .rec-number {
+            background: var(--accent);
+            color: #fff;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: 700;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+
+        .rec-content {
+            font-size: 13.5px;
+        }
+
+        .rec-content strong { color: var(--primary); }
+
+        /* ── Pipeline diagram ── */
+        .pipeline {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            margin: 24px 0;
+            flex-wrap: wrap;
+        }
+
+        .pipeline-step {
+            background: var(--primary);
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-align: center;
+            min-width: 120px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .pipeline-step .step-icon {
+            font-size: 24px;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .pipeline-step.alt { background: var(--primary-light); }
+        .pipeline-step.accent { background: var(--accent); color: var(--text); }
+
+        .pipeline-arrow {
+            font-size: 24px;
+            color: var(--primary);
+            padding: 0 8px;
+            font-weight: 700;
+        }
+
+        /* ── Footer ── */
+        .report-footer {
+            text-align: center;
+            padding: 30px 0 20px;
+            font-size: 12px;
+            color: var(--text-light);
+            border-top: 2px solid var(--border);
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ═══════════════════ COVER PAGE ═══════════════════ -->
+<div class="cover">
+    <div class="cover-org">LinuxWorld Informatics Pvt. Ltd.</div>
+    <div class="cover-org-sub">Summer Industrial Training Programme 2026</div>
+
+    <div class="cover-icon">🌾</div>
+
+    <div class="cover-badge">Capstone Project Report</div>
+
+    <div class="cover-title">Agricultural Productivity &amp; Yield Analysis in India</div>
+    <div class="cover-subtitle">End-to-End Analytics Pipeline (Excel + SQL + Python + Power BI)</div>
+
+    <div class="cover-details">
+        <div class="cover-details-header">Student Information</div>
+        <table>
+            <tr><td>Name</td><td>Trivedi Dharmik.H.</td></tr>
+            <tr><td>College</td><td>ITM SLS Baroda University</td></tr>
+            <tr><td>Branch</td><td>B.Tech — Computer Science &amp; Engineering</td></tr>
+            <tr><td>Duration</td><td>5th June 2026 – 20th July 2026</td></tr>
+            <tr><td>Email ID</td><td>dharmiktrivedi595@gmail.com</td></tr>
+        </table>
+    </div>
+
+    <div class="cover-footer">
+        LinuxWorld Informatics Pvt. Ltd. &nbsp;|&nbsp; Jaipur, Rajasthan &nbsp;|&nbsp; July 2026
+    </div>
+</div>
+
+<!-- ═══════════════════ PAGE 2: PROJECT DESCRIPTION ═══════════════════ -->
+<div class="page-break"></div>
+<div class="container">
+
+    <div class="section">
+        <span class="section-number">1</span>
+        <h2 class="section-title">Project Description</h2>
+        <hr class="section-divider">
+    </div>
+
+    <p>
+        India is one of the world's largest agricultural economies, yet productivity varies dramatically across its 32 states and union territories, six geographic zones, and dozens of crop types. Traditional reporting relies on raw production figures — but these are fundamentally incomparable across crops (e.g., sugarcane is measured in tonnes while coconut is measured in nuts). This makes it impossible to evaluate relative agricultural performance using raw data alone.
+    </p>
+
+    <p>
+        This project — <strong>"Agricultural Productivity &amp; Yield Analysis in India"</strong> — is a <strong>Capstone-level end-to-end analytics pipeline</strong> that addresses this challenge. It ingests 10,000+ historical crop production records sourced from GOI Agricultural Statistics (Ministry of Agriculture &amp; Farmers Welfare, via data.gov.in), covering the period 1997–2015 across all Indian states.
+    </p>
+
+    <p>
+        The core innovation is a <strong>Normalized Yield Index</strong> — a metric that rebases every record's yield relative to its crop's national average (1.0 = national average performance for that specific crop). This allows meaningful cross-crop and cross-region comparisons for the first time, enabling policymakers and analysts to identify high-performing and underperforming regions at a glance.
+    </p>
+
+    <p>
+        The project integrates four technology layers into a single cohesive pipeline:
+    </p>
+
+    <div class="pipeline">
+        <div class="pipeline-step">
+            <span class="step-icon">📊</span>
+            Excel / CSV
+        </div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step alt">
+            <span class="step-icon">🐍</span>
+            Python (EDA)
+        </div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">
+            <span class="step-icon">🗄️</span>
+            SQL (SQLite)
+        </div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step accent">
+            <span class="step-icon">📈</span>
+            Power BI
+        </div>
+    </div>
+
+    <p>
+        <strong>Phase 1 — Data Preparation (Excel/CSV + Python):</strong> Raw agricultural data is cleaned, validated, and enriched using automated Python scripts. Outlier detection (IQR-based flagging), yield computation (Production ÷ Area), and the Normalized Yield Index are calculated programmatically. A state-to-zone geographic reference mapping is generated for regional analysis.
+    </p>
+
+    <p>
+        <strong>Phase 2 — Database Analysis (SQL / SQLite):</strong> Cleaned data is loaded into an SQLite database. Six SQL task scripts demonstrate basic aggregations, filtering and segmentation, INNER JOINs, Window Functions (RANK, LAG for Year-over-Year growth), Subqueries with CTEs, and a final denormalized VIEW optimized for BI consumption.
+    </p>
+
+    <p>
+        <strong>Phase 3 — Exploratory Data Analysis (Python):</strong> A comprehensive EDA notebook performs statistical analysis including bivariate correlation checks, distribution analysis, zone-wise and season-wise breakdowns, and trend visualization using Matplotlib and Seaborn.
+    </p>
+
+    <p>
+        <strong>Phase 4 — Business Intelligence Dashboard (Power BI):</strong> A 3-page interactive Power BI dashboard provides an Executive Summary with KPI cards, a Detailed Analysis page with slicers and multi-dimensional charts, and a Recommendations page with strategic policy insights. DAX measures implement the Normalized Yield Index natively in the BI layer.
+    </p>
+
+    <!-- ═══════════════════ TECHNOLOGIES USED ═══════════════════ -->
+
+    <div class="section">
+        <span class="section-number">2</span>
+        <h2 class="section-title">Technologies Used</h2>
+        <hr class="section-divider">
+    </div>
+
+    <div class="subsection">2.1 Data Preparation &amp; Processing</div>
+
+    <div class="tech-card">
+        <div class="tech-card-title"><span class="emoji">📊</span> Microsoft Excel / CSV</div>
+        <p>Used as the initial data format for raw agricultural records sourced from data.gov.in. CSV files serve as the interchange format between the data generation, analysis, and BI layers of the pipeline.</p>
+    </div>
+
+    <div class="tech-card">
+        <div class="tech-card-title"><span class="emoji">🐍</span> Python 3.x</div>
+        <p>The primary programming language powering automated data generation, cleaning, statistical analysis, and visualization. Key libraries used:</p>
+        <ul>
+            <li><strong>Pandas</strong> — Data manipulation, aggregation, and DataFrame operations on 10,000+ records</li>
+            <li><strong>NumPy</strong> — Numerical computations, statistical functions, and array operations</li>
+            <li><strong>Matplotlib</strong> — Publication-quality static visualizations (line charts, bar charts, scatter plots)</li>
+            <li><strong>Seaborn</strong> — Statistical data visualization with enhanced aesthetics (heatmaps, distribution plots)</li>
+            <li><strong>sqlite3</strong> — Python's built-in SQLite interface for database creation and querying</li>
+        </ul>
+    </div>
+
+    <div class="subsection">2.2 Database &amp; Query Engine</div>
+
+    <div class="tech-card">
+        <div class="tech-card-title"><span class="emoji">🗄️</span> SQLite / SQLite3</div>
+        <p>A lightweight, serverless relational database engine used for structured querying of the agricultural dataset. SQL scripts demonstrate:</p>
+        <ul>
+            <li><strong>Aggregations</strong> — GROUP BY with SUM, AVG, MIN, MAX, COUNT across crop types</li>
+            <li><strong>Filtering &amp; Segmentation</strong> — WHERE clauses with BETWEEN, compound conditions</li>
+            <li><strong>INNER JOINs</strong> — Combining crop records with state-to-zone geographic mapping</li>
+            <li><strong>Window Functions</strong> — RANK() with PARTITION BY for zone-level rankings, LAG() for Year-over-Year (YoY) growth calculations</li>
+            <li><strong>CTEs (Common Table Expressions)</strong> — Multi-level WITH clauses for identifying high-performing districts</li>
+            <li><strong>VIEWs</strong> — Denormalized view (<code>V_Agricultural_Productivity_KPIs</code>) optimized for BI dashboarding</li>
+        </ul>
+    </div>
+
+    <div class="subsection">2.3 Business Intelligence &amp; Visualization</div>
+
+    <div class="tech-card">
+        <div class="tech-card-title"><span class="emoji">📈</span> Microsoft Power BI Desktop</div>
+        <p>Enterprise-grade BI platform used to build an interactive 3-page analytical dashboard. Key capabilities utilized:</p>
+        <ul>
+            <li><strong>Data Modeling</strong> — Star-schema relationship between crop data (fact) and zone mapping (dimension)</li>
+            <li><strong>DAX Measures</strong> — Custom calculations including Total Area, Total Production, Raw Yield, Crop Mean Yield (using ALLEXCEPT), and the Normalized Yield Index</li>
+            <li><strong>KPI Cards</strong> — At-a-glance metrics: Total Records, States Tracked, Crops Tracked, National Yield Index</li>
+            <li><strong>Conditional Formatting</strong> — Color-coded performance indicators (Dark Green ≥ 1.05, Light Green ≥ 0.95, Gold ≥ 0.85, Red &lt; 0.85)</li>
+            <li><strong>Interactive Slicers</strong> — Year range, geographic zone, and crop name filters for drill-down analysis</li>
+            <li><strong>Multi-chart Layout</strong> — Line charts, donut charts, stacked area charts, and ranked tables</li>
+        </ul>
+    </div>
+
+    <div class="subsection">2.4 Development Environment</div>
+
+    <div class="tech-card">
+        <div class="tech-card-title"><span class="emoji">💻</span> Development Tools</div>
+        <ul>
+            <li><strong>Jupyter Notebook</strong> — Interactive development environment for Python-based EDA and pipeline execution</li>
+            <li><strong>VS Code</strong> — Code editor for Python scripts, SQL query authoring, and project management</li>
+            <li><strong>Git</strong> — Version control for tracking project evolution</li>
+        </ul>
+    </div>
+
+    <!-- ═══════════════════ KEY FINDINGS ═══════════════════ -->
+    <div class="page-break"></div>
+
+    <div class="section">
+        <span class="section-number">3</span>
+        <h2 class="section-title">Key Findings</h2>
+        <hr class="section-divider">
+    </div>
+
+    <p>The analysis of 10,000+ agricultural records spanning 32 states, 20 crops, and 19 years (1997–2015) revealed several critical insights:</p>
+
+    <div class="subsection">3.1 Zone-wise Yield Performance</div>
+
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Zone</th>
+                <th>Total Records</th>
+                <th>Avg Yield Index</th>
+                <th>Performance</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>1</td><td>South</td><td>2,215</td><td>1.0815</td><td>✅ Above Average</td></tr>
+            <tr><td>2</td><td>North</td><td>1,845</td><td>1.0257</td><td>✅ Above Average</td></tr>
+            <tr><td>3</td><td>West</td><td>1,540</td><td>1.0131</td><td>✅ Above Average</td></tr>
+            <tr><td>4</td><td>East</td><td>1,558</td><td>0.9461</td><td>⚠️ Below Average</td></tr>
+            <tr><td>5</td><td>Northeast</td><td>2,141</td><td>0.9345</td><td>⚠️ Below Average</td></tr>
+            <tr><td>6</td><td>Central</td><td>578</td><td>0.7261</td><td>🔴 Critical</td></tr>
+        </tbody>
+    </table>
+
+    <div class="subsection">3.2 Critical Insights</div>
+
+    <div class="finding no-break">
+        <span class="finding-icon">📉</span>
+        <div class="finding-text">
+            <strong>Farm Size ≠ Productivity:</strong> The correlation between cultivated area and yield index is nearly zero (<strong>r = -0.0103</strong>), definitively debunking the common assumption that larger farms produce higher yields. Productivity is driven by inputs (seeds, fertilizers, irrigation), not acreage.
+        </div>
+    </div>
+
+    <div class="finding no-break">
+        <span class="finding-icon">🔴</span>
+        <div class="finding-text">
+            <strong>Central Zone Crisis:</strong> The Central zone (Madhya Pradesh, Chhattisgarh) operates at only <strong>72.6%</strong> of the national average yield — a 27.4% productivity gap that represents a critical area for targeted government intervention.
+        </div>
+    </div>
+
+    <div class="finding no-break">
+        <span class="finding-icon">🌱</span>
+        <div class="finding-text">
+            <strong>Seasonal Dynamics:</strong> Kharif season dominates in terms of cultivated area, but Rabi season crops demonstrate more consistent and stable yield performance across regions, suggesting better water management during the winter growing season.
+        </div>
+    </div>
+
+    <div class="finding no-break">
+        <span class="finding-icon">🏆</span>
+        <div class="finding-text">
+            <strong>South Zone Leadership:</strong> Southern states consistently outperform with a Yield Index of <strong>1.08</strong>, driven by better irrigation infrastructure, agricultural research institutions, and farmer education programs.
+        </div>
+    </div>
+
+    <!-- ═══════════════════ SQL QUERY HIGHLIGHTS ═══════════════════ -->
+
+    <div class="section">
+        <span class="section-number">4</span>
+        <h2 class="section-title">SQL Analysis Highlights</h2>
+        <hr class="section-divider">
+    </div>
+
+    <p>Six structured SQL tasks were designed to demonstrate progressive query complexity:</p>
+
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Task</th>
+                <th>SQL Concept</th>
+                <th>Objective</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>1</td><td>Basic Aggregations</td><td>Total area, production, and yield statistics by crop</td></tr>
+            <tr><td>2</td><td>Filtering &amp; Segmentation</td><td>Query Rice yields for 2005–2012 (excluding outliers)</td></tr>
+            <tr><td>3</td><td>INNER JOIN</td><td>Combine crop records with state-to-zone mapping</td></tr>
+            <tr><td>4</td><td>Window Functions</td><td>RANK states by yield within zones; LAG for YoY growth</td></tr>
+            <tr><td>5</td><td>CTEs &amp; Subqueries</td><td>Identify districts performing 25%+ above state average</td></tr>
+            <tr><td>6</td><td>VIEWs for BI</td><td>Denormalized view optimized for dashboard consumption</td></tr>
+        </tbody>
+    </table>
+
+    <p><strong>Sample SQL — Year-over-Year Growth using LAG Window Function:</strong></p>
+
+    <div class="code-block">
+<span class="keyword">WITH</span> YearlyNationalYield <span class="keyword">AS</span> (
+    <span class="keyword">SELECT</span> Crop_Year, <span class="function">AVG</span>(Yield_Index) <span class="keyword">AS</span> Avg_Yield_Index
+    <span class="keyword">FROM</span> crop_production_cleaned
+    <span class="keyword">WHERE</span> Crop_Year <span class="keyword">BETWEEN</span> <span class="string">1997</span> <span class="keyword">AND</span> <span class="string">2014</span>
+    <span class="keyword">GROUP BY</span> Crop_Year
+)
+<span class="keyword">SELECT</span>
+    Crop_Year,
+    <span class="function">ROUND</span>(Avg_Yield_Index, 4) <span class="keyword">AS</span> National_Yield_Index,
+    <span class="function">ROUND</span>(<span class="function">LAG</span>(Avg_Yield_Index, 1) <span class="keyword">OVER</span> (<span class="keyword">ORDER BY</span> Crop_Year), 4)
+        <span class="keyword">AS</span> Prev_Year_Index,
+    <span class="function">ROUND</span>(
+        ((Avg_Yield_Index - <span class="function">LAG</span>(Avg_Yield_Index, 1)
+            <span class="keyword">OVER</span> (<span class="keyword">ORDER BY</span> Crop_Year))
+        / <span class="function">LAG</span>(Avg_Yield_Index, 1) <span class="keyword">OVER</span> (<span class="keyword">ORDER BY</span> Crop_Year))
+        * 100, 2
+    ) <span class="keyword">AS</span> YoY_Growth_Pct
+<span class="keyword">FROM</span> YearlyNationalYield;
+    </div>
+
+    <!-- ═══════════════════ CONCLUSION ═══════════════════ -->
+    <div class="page-break"></div>
+
+    <div class="section">
+        <span class="section-number">5</span>
+        <h2 class="section-title">Conclusion</h2>
+        <hr class="section-divider">
+    </div>
+
+    <p>
+        This capstone project successfully demonstrates the design and implementation of a <strong>complete, production-grade analytics pipeline</strong> integrating four complementary technology layers — Excel/CSV for data interchange, Python for automated data processing and statistical analysis, SQL for structured querying and relational modeling, and Power BI for interactive business intelligence dashboarding.
+    </p>
+
+    <p>
+        The pipeline processed <strong>10,000+ agricultural records</strong> spanning 32 Indian states, 20 crop types, and 19 years of production history. Through the creation of a <strong>Normalized Yield Index</strong>, the project solved a fundamental comparability challenge in agricultural analytics — enabling meaningful cross-crop and cross-region productivity comparisons that are impossible with raw production data.
+    </p>
+
+    <p>
+        The analysis revealed significant and actionable insights: the <strong>Central zone operates at only 72.6%</strong> of the national average yield, representing a critical area for policy intervention. The near-zero correlation between farm size and productivity (<strong>r = -0.01</strong>) challenges conventional assumptions and redirects focus toward yield-enhancing inputs rather than area expansion. The <strong>South and North zones</strong> consistently outperform, offering replicable best practices.
+    </p>
+
+    <p>
+        The SQL analysis demonstrated progressive complexity from basic aggregations through Window Functions and CTEs, culminating in a denormalized BI-ready VIEW. The Power BI dashboard translates these findings into an <strong>executive-ready 3-page report</strong> with interactive drill-down capabilities, enabling stakeholders to explore the data across time, geography, crop, and season dimensions.
+    </p>
+
+    <p>
+        The project validates that <strong>data doesn't speak for itself — a well-designed pipeline makes it speak clearly</strong>. Each technology layer brings a unique strength: Excel for accessibility, Python for automation, SQL for structure, and Power BI for storytelling.
+    </p>
+
+    <!-- ═══════════════════ FUTURE SCOPE ═══════════════════ -->
+
+    <div class="section">
+        <span class="section-number">6</span>
+        <h2 class="section-title">Future Scope</h2>
+        <hr class="section-divider">
+    </div>
+
+    <p>The current pipeline establishes a strong foundation that can be extended in several impactful directions as the project evolves:</p>
+
+    <div class="rec-card no-break">
+        <div class="rec-number">1</div>
+        <div class="rec-content">
+            <strong>Machine Learning for Yield Prediction:</strong> Integrate scikit-learn or TensorFlow models to predict future crop yields based on historical patterns, weather data, and soil quality indicators. Time-series forecasting (ARIMA, Prophet) could enable season-ahead yield estimates for planning.
+        </div>
+    </div>
+
+    <div class="rec-card no-break">
+        <div class="rec-number">2</div>
+        <div class="rec-content">
+            <strong>Real-Time Data Integration:</strong> Connect the pipeline to live government APIs (data.gov.in, IMD weather API) to enable real-time dashboard updates. This would transform the project from a historical analysis tool into a live monitoring system.
+        </div>
+    </div>
+
+    <div class="rec-card no-break">
+        <div class="rec-number">3</div>
+        <div class="rec-content">
+            <strong>Geospatial Mapping:</strong> Integrate GIS libraries (GeoPandas, Folium) or Power BI's map visualizations with actual district-level geographic boundaries. This would enable choropleth map visualizations showing productivity hotspots and cold-zones across India.
+        </div>
+    </div>
+
+    <div class="rec-card no-break">
+        <div class="rec-number">4</div>
+        <div class="rec-content">
+            <strong>Cloud Deployment &amp; Automation:</strong> Deploy the pipeline on AWS (using S3 for storage, Lambda for automation, and QuickSight for BI) or Azure (Blob Storage + Azure Data Factory + Power BI Service) to enable scheduled automatic data refreshes and team-wide dashboard access.
+        </div>
+    </div>
+
+    <div class="rec-card no-break">
+        <div class="rec-number">5</div>
+        <div class="rec-content">
+            <strong>Multi-Factor Analysis:</strong> Incorporate additional variables such as rainfall data, irrigation coverage, fertilizer usage, and MSP (Minimum Support Price) trends to build a more comprehensive model of agricultural productivity drivers.
+        </div>
+    </div>
+
+    <div class="rec-card no-break">
+        <div class="rec-number">6</div>
+        <div class="rec-content">
+            <strong>Mobile-Responsive Web Dashboard:</strong> Build a web-based version of the dashboard using Streamlit or Dash (Python frameworks) to make the analytics accessible to field officers and farmers via mobile devices without requiring Power BI licenses.
+        </div>
+    </div>
+
+    <!-- ═══════════════════ FOOTER ═══════════════════ -->
+
+    <div class="report-footer">
+        <strong>Trivedi Dharmik.H.</strong> &nbsp;|&nbsp; B.Tech CSE, ITM SLS Baroda University<br>
+        Summer Industrial Training — LinuxWorld Informatics Pvt. Ltd. &nbsp;|&nbsp; June – July 2026<br>
+        <span style="color: var(--primary);">dharmiktrivedi595@gmail.com</span>
+    </div>
+
+</div>
+
+</body>
+</html>
